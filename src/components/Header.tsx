@@ -23,6 +23,8 @@ export default function Header() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', paddingTop: '15px' }}>
           <Link href="/" style={{ color: 'white', textDecoration: 'none' }}>Главная</Link>
           <Link href="/about" style={{ color: 'white', textDecoration: 'none' }}>О нас</Link>
+          <Link href="/blog" style={{ color: 'white', textDecoration: 'none' }}>Блог</Link>
+          <Link href="/api-tasks" style={{ color: 'white', textDecoration: 'none' }}>API Задачи</Link>
           <Link href="/contacts" style={{ color: 'white', textDecoration: 'none' }}>Контакты</Link>
         </div>
       )}

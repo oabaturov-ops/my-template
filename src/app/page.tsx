@@ -1,42 +1,74 @@
 "use client";
 
 import { useState } from 'react';
-import Card from '@/components/Card';
 
 export default function Home() {
-  const [count, setCount] = useState(0);
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [input, setInput] = useState('');
+
+  function addTask() {
+    if (input.trim() === '') return;
+    setTasks([...tasks, { id: Date.now(), text: input, done: false }]);
+    setInput('');
+  }
+
+  function toggleTask(id: number) {
+    setTasks(tasks.map(t => t.id === id ? { ...t, done: !t.done } : t));
+  }
+
+  function deleteTask(id: number) {
+    setTasks(tasks.filter(t => t.id !== id));
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto p-8">
-        <h1 className="text-4xl font-bold text-blue-600 mb-4">
-          Мой первый сайт
-        </h1>
+    <div style={{ padding: '40px', maxWidth: '600px', margin: '0 auto' }}>
+      <h1 style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '20px' }}>Мои задачи</h1>
+      
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && addTask()}
+          placeholder="Новая задача..."
+          style={{ flex: 1, padding: '12px', fontSize: '16px', border: '1px solid #ccc', borderRadius: '8px' }}
+        />
+        <button
+          onClick={addTask}
+          style={{ padding: '12px 24px', background: '#0070f3', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '16px' }}
+        >
+          Добавить
+        </button>
+      </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6 text-center">
-          <h2 className="text-xl font-bold mb-4">Счётчик</h2>
-          <p className="text-5xl font-bold mb-4">{count}</p>
-          <div className="flex gap-4 justify-center">
-            <button 
-              onClick={() => setCount(count + 1)}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 cursor-pointer"
+      <div>
+        {tasks.map((task) => (
+          <div key={task.id} style={{ 
+            display: 'flex', alignItems: 'center', gap: '12px', 
+            padding: '12px', borderBottom: '1px solid #eee' 
+          }}>
+            <input 
+              type="checkbox" 
+              checked={task.done}
+              onChange={() => toggleTask(task.id)}
+            />
+            <span style={{ 
+              flex: 1, 
+              textDecoration: task.done ? 'line-through' : 'none', 
+              color: task.done ? '#999' : '#333' 
+            }}>
+              {task.text}
+            </span>
+            <button
+              onClick={() => deleteTask(task.id)}
+              style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer', fontSize: '18px' }}
             >
-              Плюс 1
-            </button>
-            <button 
-              onClick={() => setCount(0)}
-              className="bg-gray-400 text-white px-6 py-3 rounded-lg hover:bg-gray-500 cursor-pointer"
-            >
-              Сбросить
+              ✕
             </button>
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card title="Быстро" description="Сайт загружается мгновенно" />
-          <Card title="Красиво" description="Современный дизайн" />
-          <Card title="Надёжно" description="Работает без сбоев" />
-        </div>
+        ))}
+        {tasks.length === 0 && (
+          <p style={{ color: '#999', textAlign: 'center', padding: '20px' }}>Задач пока нет</p>
+        )}
       </div>
     </div>
   );
