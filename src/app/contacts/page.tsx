@@ -6,11 +6,11 @@ export default function Contacts() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [sent, setSent] = useState(false);
 
-  function handleChange(e) {
+    function handleChange(e: any) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: any) {
     e.preventDefault();
     const res = await fetch('/api/contact', {
       method: 'POST',

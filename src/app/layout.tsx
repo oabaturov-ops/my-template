@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Мой сайт';
+
 export const metadata: Metadata = {
-  title: "Мой первый сайт на Next.js",
+  title: siteName,
   description: "Учебный сайт, созданный в рамках обучения веб-разработке на Next.js",
   keywords: ["Next.js", "React", "веб-разработка", "обучение"],
 };

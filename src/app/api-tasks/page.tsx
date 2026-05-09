@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 export default function ApiTasksPage() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
