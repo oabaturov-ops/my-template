@@ -3,11 +3,18 @@
 import { useState } from 'react';
 
 export default function Contacts() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState<any>({ name: '', email: '', message: '' });
   const [sent, setSent] = useState(false);
+  const [fileName, setFileName] = useState('');
 
-    function handleChange(e: any) {
+  function handleChange(e: any) {
     setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+  function handleFile(e: any) {
+    if (e.target.files && e.target.files[0]) {
+      setFileName(e.target.files[0].name);
+    }
   }
 
   async function handleSubmit(e: any) {
@@ -20,6 +27,7 @@ export default function Contacts() {
     if (res.ok) {
       setSent(true);
       setForm({ name: '', email: '', message: '' });
+      setFileName('');
     }
   }
 
@@ -35,6 +43,7 @@ export default function Contacts() {
   return (
     <div style={{ padding: '40px', maxWidth: '600px', margin: '0 auto' }}>
       <h1>Контакты</h1>
+      <p style={{ color: '#666', marginBottom: '20px' }}>Заполните форму или прикрепите файл</p>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         <input
           name="name"
@@ -62,6 +71,20 @@ export default function Contacts() {
           rows={5}
           style={{ padding: '12px', fontSize: '16px', border: '1px solid #ccc', borderRadius: '8px' }}
         />
+        <div style={{ padding: '20px', border: '2px dashed #ccc', borderRadius: '8px', textAlign: 'center' }}>
+          <input
+            type="file"
+            onChange={handleFile}
+            style={{ display: 'none' }}
+            id="file-upload"
+          />
+          <label htmlFor="file-upload" style={{ 
+            cursor: 'pointer', color: '#0070f3', fontSize: '16px' 
+          }}>
+            {fileName || '📎 Прикрепить файл'}
+          </label>
+          {fileName && <p style={{ color: '#666', fontSize: '14px', marginTop: '8px' }}>{fileName}</p>}
+        </div>
         <button
           type="submit"
           style={{ padding: '14px', fontSize: '16px', background: '#0070f3', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
